@@ -8,12 +8,13 @@ import pandas as pd
 from sklearn import svm
 from ML.svm_glcm.Spectral_Feature import Spectral_Features as Spectural
 
-#from Spectral_Feature import Spectral_Features as Spectural
-#from Gabor_Feature import GaborFeature
+# from Spectral_Feature import Spectral_Features as Spectural
+# from Gabor_Feature import GaborFeature
 # 灰度共生矩阵的计算
 
 # 定义最大灰度级数
 gray_level = 16
+
 
 def maxGrayLevel(img):
     max_gray_level = 0
@@ -48,6 +49,7 @@ def getGlcm(input, d_x, d_y):
             ret[i][j] /= float(height * width)
     return ret
 
+
 def feature_computer(p):
     Con = 0.0
     Eng = 0.0
@@ -62,20 +64,20 @@ def feature_computer(p):
                 Eng += p[i][j] * math.log(p[i][j])
     return Asm, Con, -Eng, Idm
 
+
 # 返回 4个变量
 def testfeature(img):
-
-
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     glcm_0 = getGlcm(img_gray, 1, 0)
     # glcm_1=getGlcm(src_gray, 0,1)
     # glcm_2=getGlcm(src_gray, 1,1)
     # glcm_3=getGlcm(src_gray, -1,1)
     asm, con, eng, idm = feature_computer(glcm_0)
-    if (not asm) or (not con)  or (not eng) or (not idm):
+    if (not asm) or (not con) or (not eng) or (not idm):
         print('没有返回值！')
 
     return asm, con, eng, idm  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）
+
 
 # 返回R,G,B、H、L、S: N×6的矩阵
 def reRGBandHLS(img):
@@ -87,7 +89,7 @@ def reRGBandHLS(img):
     im_G_mean = np.mean(im_G)
     im_B_mean = np.mean(im_B)
     # 转化为HLS颜色空间
-    img_hls=cv.cvtColor(img, cv.COLOR_BGR2HLS)
+    img_hls = cv.cvtColor(img, cv.COLOR_BGR2HLS)
     im_H = img[:, :, 0]  # 从HLS中读入通道
     im_L = img[:, :, 1]
     im_S = img[:, :, 2]
@@ -95,53 +97,51 @@ def reRGBandHLS(img):
     im_H_mean = np.mean(im_H)
     im_L_mean = np.mean(im_L)
     im_S_mean = np.mean(im_S)
-    return im_R_mean,im_G_mean,im_B_mean,im_H_mean,im_L_mean,im_S_mean
+    return im_R_mean, im_G_mean, im_B_mean, im_H_mean, im_L_mean, im_S_mean
     pass
 
 
 if __name__ == '__main__':
 
-    fulims_path='../garbage/full/'# 图像数据集的路径
-    empims_path='../garbage/empty/'
-    fims_list=os.listdir(fulims_path)
-    eims_list=os.listdir(empims_path)
-    imgnum=len(fims_list)+len(eims_list)  # 获取总个数
+    fulims_path = '../garbage/full/'  # 图像数据集的路径
+    empims_path = '../garbage/empty/'
+    fims_list = os.listdir(fulims_path)
+    eims_list = os.listdir(empims_path)
+    imgnum = len(fims_list) + len(eims_list)  # 获取总个数
     print(len(fims_list))
     Feature_Color = Spectural()
 
-    data=np.zeros((imgnum, 17))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满）
+    data = np.zeros((imgnum, 17))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满）
     for i in range(imgnum):
         if i < len(fims_list):
-           
+
             data[i, 16] = int(1)
             print('../garbage/full/' + fims_list[i])
             img = cv.imread('../garbage/full/' + fims_list[i])
         else:
             data[i, 16] = int(0)
-            print('../garbage/empty/' + eims_list[i-len(fims_list)])
-            img = cv.imread('../garbage/empty/' + eims_list[i-len(fims_list)])
+            print('../garbage/empty/' + eims_list[i - len(fims_list)])
+            img = cv.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
 
-        img = img[0:img.shape[0]//3 , ...]
+        img = img[0:img.shape[0] // 3, ...]
         # 0,1,2,3 添加灰度矩阵四类特征
         asm, con, eng, idm = testfeature(img)
-        data[i, 0:4]=asm, con, eng, idm
+        data[i, 0:4] = asm, con, eng, idm
         # 4-9 添加6类图像空间特征
-        data[i, 4:10]=reRGBandHLS(img)
+        data[i, 4:10] = reRGBandHLS(img)
         # 添加6类其他特征
         other_feature = np.array(Feature_Color.Cal_SpetrelFeature(img)).astype('double')
-        for j in range(len(other_feature)-2):
-            data[i][j+10] = other_feature[j+2]
-        
+        for j in range(len(other_feature) - 2):
+            data[i][j + 10] = other_feature[j + 2]
+
         print(data[i, 16])
 
     print('All data', data)
     print(type(data))  # 显示此变量类型
     print('data size', data.shape)  # 输出此data纬度
-    data_tosave=pd.DataFrame(data)
+    data_tosave = pd.DataFrame(data)
     data_tosave.to_csv('../data/garbage_33dim_data.csv')
     print('success saving!')
-
-
 
 # if __name__ == '__main__':
 
@@ -156,7 +156,7 @@ if __name__ == '__main__':
 #     data=np.zeros((imgnum, 50))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满）
 #     for i in range(imgnum):
 #         if i < len(fims_list):
-           
+
 #             data[i, 49] = int(1)
 #             print('../garbage/full/' + fims_list[i])
 #             img = cv.imread('../garbage/full/' + fims_list[i])
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 #             data[i, 49] = int(0)
 #             print('../garbage/empty/' + eims_list[i-len(fims_list)])
 #             img = cv.imread('../garbage/empty/' + eims_list[i-len(fims_list)])
-        
+
 
 #         img = img[0:img.shape[0]//3 , ...]
 #         img1 = img.copy()
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 #         other_feature = np.array(Feature_Color.Cal_SpetrelFeature(img1)).astype('double')
 #         for j in range(len(other_feature)-2):
 #             data[i][j+10] = other_feature[j+2]
-        
+
 #         img2 = cv.resize(img2, (600, 500), interpolation=cv.INTER_AREA)  # 500, 400 均划为300×300格式, 双线性插值法
 #         # 0,1,2,3 添加灰度矩阵四类特征
 #         asm, con, eng, idm = testfeature(img2)
@@ -215,32 +215,20 @@ if __name__ == '__main__':
 #     print('success saving!')
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    # path1='corn_new_0/hurt1.png'
-    # rgb1=cv.imread(path1)
-    # print('rgb\n:', rgb1)
-    # # cv.imshow("rgb", rgb1)
-    # # cv.waitKey(0)
-    # # cv.destroyAllWindows()
-    # hsv1=cv.cvtColor(rgb1, cv.COLOR_BGR2HSV)
-    # print('hsv\n:', hsv1)
-    # # cv.imshow("hsv", hsv1)
-    # # cv.waitKey(0)
-    # hls1=cv.cvtColor(rgb1, cv.COLOR_BGR2HLS)
-    # print('hls1\n:', hls1)
-    # cv.imshow("hls", hls1)
-    # cv.waitKey(0)
+# path1='corn_new_0/hurt1.png'
+# rgb1=cv.imread(path1)
+# print('rgb\n:', rgb1)
+# # cv.imshow("rgb", rgb1)
+# # cv.waitKey(0)
+# # cv.destroyAllWindows()
+# hsv1=cv.cvtColor(rgb1, cv.COLOR_BGR2HSV)
+# print('hsv\n:', hsv1)
+# # cv.imshow("hsv", hsv1)
+# # cv.waitKey(0)
+# hls1=cv.cvtColor(rgb1, cv.COLOR_BGR2HLS)
+# print('hls1\n:', hls1)
+# cv.imshow("hls", hls1)
+# cv.waitKey(0)
 '''
     ims_path='corn_new_0/'# 图像数据集的路径
     ims_list=os.listdir(ims_path)
@@ -368,5 +356,3 @@ if __name__ == '__main__':
 
     #
 '''
-
-
