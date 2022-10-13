@@ -15,7 +15,7 @@ class Spectral_Features():
         fMean = nSum / (Height * Width)
         return fMean
 
-    def Standard_Deviation(self, pImg_Grey, fMean):
+    def Standard_Deviation(self, pImg_Grey, fMean):  # 标准差
         Height, Width = pImg_Grey.shape
         fSum = 0
         for i in range(Height):
@@ -24,7 +24,7 @@ class Spectral_Features():
         f_SD = sqrt(fSum / (Height * Width))
         return f_SD
 
-    def Skewness(self, pImg_Grey, fMean, f_SD):
+    def Skewness(self, pImg_Grey, fMean, f_SD):  # 偏差
         Height, Width = pImg_Grey.shape
         fSum = 0
         for i in range(Height):
@@ -34,14 +34,14 @@ class Spectral_Features():
         f_SK = fSum / (Height * Width)
         return f_SK
 
-    def Cloud_Cover(self, B, R, G):
+    def Cloud_Cover(self, B, R, G):   # 覆盖率
         Height, Width = B.shape
         nSum_Cloud = 0
         for i in range(Height):
             for j in range(Width):
-                nSub = 2 * (int)(B[i, j]) - (int)(R[i, j]) - (int)(G[i, j])
+                nSub = 2 * int(B[i, j]) - int(R[i, j]) - int(G[i, j])
                 if nSub < 50:
-                    nSum_Cloud = nSum_Cloud + 1
+                    nSum_Cloud += 1
         fCoverRate = nSum_Cloud / (Height * Width)
         return fCoverRate
 
@@ -63,4 +63,4 @@ class Spectral_Features():
         fDiff_GB = fMean_G - fMean_B
         fCoverRate = self.Cloud_Cover(B, R, G)
 
-        return (fMean_B, fMean_R, fSD_B, fSK_B, fDiff_RG, fDiff_RB, fDiff_GB, fCoverRate)
+        return fMean_B, fMean_R, fSD_B, fSK_B, fDiff_RG, fDiff_RB, fDiff_GB, fCoverRate

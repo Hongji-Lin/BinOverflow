@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 
 from sklearn import svm
-from ML.svm_glcm.Spectral_Feature import Spectral_Features as Spectural
+from ML.svm_glcm.Spectral_Feature import Spectral_Features as Spectral
 
-# from Spectral_Feature import Spectral_Features as Spectural
+# from Spectral_Feature import Spectral_Features as Spectral
 # from Gabor_Feature import GaborFeature
 # 灰度共生矩阵的计算
 
@@ -109,7 +109,7 @@ if __name__ == '__main__':
     eims_list = os.listdir(empims_path)
     imgnum = len(fims_list) + len(eims_list)  # 获取总个数
     print(len(fims_list))
-    Feature_Color = Spectural()
+    Feature_Color = Spectral()
 
     data = np.zeros((imgnum, 17))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满）
     for i in range(imgnum):
