@@ -106,20 +106,26 @@ if __name__ == '__main__':
     fulims_path = '../garbage/full/'  # 图像数据集的路径
     empims_path = '../garbage/empty/'
     fims_list = os.listdir(fulims_path)
+    fims_list.sort(key=lambda x: int(x.split('.')[0]))
     eims_list = os.listdir(empims_path)
+    eims_list.sort(key=lambda x: int(x.split('.')[0]))
     imgnum = len(fims_list) + len(eims_list)  # 获取总个数
     print(len(fims_list))
     Feature_Color = Spectral()
 
-    data = np.zeros((imgnum, 17))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满）
+    data = np.zeros((imgnum, 18))  # 角二阶矩（能量）、对比度、熵、反差分矩阵（逆方差）、R,G,B、H、L、S、 TAG（0 空 1 满） 最后一个是图片的路径
     for i in range(imgnum):
         if i < len(fims_list):
 
             data[i, 16] = int(1)
+            fims_name = fims_list[i].split('.')[0]
+            data[i, 17] = fims_name
             print('../garbage/full/' + fims_list[i])
             img = cv.imread('../garbage/full/' + fims_list[i])
         else:
             data[i, 16] = int(0)
+            eims_name = eims_list[i - len(fims_list)].split('.')[0]
+            data[i, 17] = eims_name
             print('../garbage/empty/' + eims_list[i - len(fims_list)])
             img = cv.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
 
@@ -140,7 +146,7 @@ if __name__ == '__main__':
     print(type(data))  # 显示此变量类型
     print('data size', data.shape)  # 输出此data纬度
     data_tosave = pd.DataFrame(data)
-    data_tosave.to_csv('../data/garbage_33dim_data.csv')
+    data_tosave.to_csv('../data/garbage_33dim_sorted_name_data.csv')
     print('success saving!')
 
 # if __name__ == '__main__':
