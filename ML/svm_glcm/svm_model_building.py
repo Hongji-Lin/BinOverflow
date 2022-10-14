@@ -14,12 +14,12 @@ import time
 
 # import Spectral_Feature as Spectral
 # 读取数据
-data = pd.read_csv('../data/garbage_33dim_data.csv')  # 49×11
+data = pd.read_csv('../data/garbage_33dim_sorted_name_data.csv')  # 49×11
 data = np.array(data)
 # print('data\n', data)
 rate = []
 Kern = 'linear'  # 或许不应该是‘poly’吗？后面有degree=3
-epoch = 5
+epoch = 1
 
 start_time = time.time()
 for i in range(epoch):
@@ -46,9 +46,14 @@ for i in range(epoch):
 
     # 计算准确率
     sum1 = 0
+    err = []
     for i in range(len(y_test)):
         if y_pre[i] == y_test[i]:
             sum1 += 1
+            err.append(0)
+        else:
+            err.append(i)
+    print(err)
 
     end_time = time.time()
 
