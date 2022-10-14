@@ -12,7 +12,7 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.pipeline import Pipeline, FeatureUnion
 import time
 
-"""
+
 # import Spectral_Feature as Spectral
 # 读取数据
 data = pd.read_csv('../data/garbage_33dim_data.csv')  # 49×11
@@ -59,8 +59,8 @@ for i in range(epoch):
     print("测试精度：{}".format(sum1 / len(y_test)))
     print("训练时间：{}".format(end_time - start_time))
     print('')
-"""
 
+"""
 import Spectral_Feature as Spectral
 
 # 读取数据
@@ -115,3 +115,4 @@ for k in range(1):
     print('right sum', sum1)
     print('rate[', k, '] ', sum1 / len(y_test))
     print('')
+"""
