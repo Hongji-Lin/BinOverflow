@@ -12,7 +12,6 @@ from sklearn.feature_selection import SelectKBest
 from sklearn.pipeline import Pipeline, FeatureUnion
 import time
 
-
 # import Spectral_Feature as Spectral
 # 读取数据
 data = pd.read_csv('../data/garbage_33dim_data.csv')  # 49×11
