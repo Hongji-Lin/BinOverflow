@@ -14,7 +14,7 @@ import time
 
 # import Spectral_Feature as Spectral
 # 读取数据
-data = pd.read_csv('../data/garbage_33dim_sorted_name_data.csv')  # 49×11
+data = pd.read_csv('../data/garbage_33dim_sorted_data.csv')  # 49×16
 data = np.array(data)
 # print('data\n', data)
 rate = []
@@ -25,7 +25,9 @@ start_time = time.time()
 for i in range(epoch):
     print("第{}轮训练开始".format(i+1))
     # 划分训练集测试集
-    X_train, X_test, y_train, y_test = train_test_split(data[:, 1:17], data[:, 17], test_size=0.1, random_state=0)
+    x = data[:, :-1]
+    y = data[:, -1]
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=0)
     parameters = {'kernel': ('linear', 'rbf'), 'C': [0.1, 1, 10, 50]}
 
     # 搭建svm模型
@@ -35,16 +37,17 @@ for i in range(epoch):
 
     # 训练模型
     # print('train beagin...')
-    clf.fit(X_train, y_train)
-    joblib.dump(clf, "svm_garbage.model")
+    # clf.fit(X_train[:, 1:-1], y_train)
+    # joblib.dump(clf, "svm_garbage.model")
     # print('Training finished')
 
     # 测试模型
-    y_pre = clf.predict(X_test)
+    clf = joblib.load("svm_garbage.model")
+    y_pre = clf.predict(X_test[:, 1:-1])
     # print('y_pre', y_pre)
     # print('y_true', y_test)
 
-    # 计算准确率
+    # 计算准确率和找到分类错误的索引
     sum1 = 0
     err = []
     for i in range(len(y_test)):
@@ -54,6 +57,24 @@ for i in range(epoch):
         else:
             err.append(i)
     print(err)
+
+    err_path = []
+    ful_res = []
+    emp_res = []
+    err_dict = dict()
+    for i in range(len(err)):
+        if i == err[i]:
+            err_path.append(X_test[i, 0])
+        err_path.sort()
+    for i in range(len(err_path)):
+        if err_path[i] <= 309:
+            ful_res.append(err_path[i])
+        else:
+            emp_res.append(err_path[i])
+        err_dict['full'] = ful_res
+        err_dict['empty'] = emp_res
+
+    print(err_dict)
 
     end_time = time.time()
 
