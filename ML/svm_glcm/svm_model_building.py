@@ -27,7 +27,7 @@ for i in range(epoch):
     # 划分训练集测试集
     x = data[:, :-1]
     y = data[:, -1]
-    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.10, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=0)
     parameters = {'kernel': ('linear', 'rbf'), 'C': [0.1, 1, 10, 50]}
 
     # 搭建svm模型
@@ -49,28 +49,27 @@ for i in range(epoch):
 
     # 计算准确率和找到分类错误的索引
     sum1 = 0
-    err = []
+    err_idx = []
     for i in range(len(y_test)):
         if y_pre[i] == y_test[i]:
             sum1 += 1
-            err.append(0)
         else:
-            err.append(i)
-    print(err)
+            err_idx.append(i)
+    print(err_idx)
 
-    err_path = []
+    err_imgidx = []
     ful_res = []
     emp_res = []
     err_dict = dict()
-    for i in range(len(err)):
-        if i == err[i]:
-            err_path.append(X_test[i, 0])
-        err_path.sort()
-    for i in range(len(err_path)):
-        if err_path[i] <= 309:
-            ful_res.append(err_path[i])
+    for i in range(len(err_idx)):
+        err_imgidx.append(X_test[err_idx[i], 0])
+    err_imgidx.sort()
+
+    for i in range(len(err_imgidx)):
+        if err_imgidx[i] <= 309:
+            ful_res.append(err_imgidx[i])
         else:
-            emp_res.append(err_path[i])
+            emp_res.append(err_imgidx[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
 

@@ -118,14 +118,10 @@ if __name__ == '__main__':
         if i < len(fims_list):
 
             data[i, 16] = int(1)
-            fims_name = fims_list[i].split('.')[0]
-            data[i, 17] = fims_name
             print('../garbage/full/' + fims_list[i])
             img = cv.imread('../garbage/full/' + fims_list[i])
         else:
             data[i, 16] = int(0)
-            eims_name = eims_list[i - len(fims_list)].split('.')[0]
-            data[i, 17] = eims_name
             print('../garbage/empty/' + eims_list[i - len(fims_list)])
             img = cv.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
 
@@ -133,7 +129,7 @@ if __name__ == '__main__':
         # 0,1,2,3 添加灰度矩阵四类特征
         asm, con, eng, idm = testfeature(img)
         data[i, 0:4] = asm, con, eng, idm
-        # 4-9 添加6类图像空间特征
+        # 4-9 添加6类颜色特征
         data[i, 4:10] = reRGBandHLS(img)
         # 添加6类其他特征
         other_feature = np.array(Feature_Color.Cal_SpetrelFeature(img)).astype('double')
