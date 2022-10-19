@@ -176,9 +176,6 @@ if __name__ == '__main__':
         else:
             img = cv2.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
 
-        # img = cv2.imread('../garbage/full/0.jpg')
-        # img = mpimg.imread('../garbage/full/0.jpg')
-
         # 生成高斯核
         gaussian = gaussian_create()
         # 生成灰度图
@@ -196,6 +193,11 @@ if __name__ == '__main__':
         low_threshold = 0.15 * np.max(new_df)
         high_threshold = 0.2 * np.max(new_df)
         result = double_threshold(dx, dy, new_df, low_threshold, high_threshold)
+
+        # pca降维
+        X = result.reshape(1, -1)
+        pca = PCA(n_components=1)
+        pca.fit(X)
 
         # # 输出图像
         # # plt.imshow(img)

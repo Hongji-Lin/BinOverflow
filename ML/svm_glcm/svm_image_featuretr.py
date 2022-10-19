@@ -129,7 +129,7 @@ if __name__ == '__main__':
         # 0,1,2,3 添加灰度矩阵四类特征
         asm, con, eng, idm = testfeature(img)
         data[i, 0:4] = asm, con, eng, idm
-        # 4-9 添加6类颜色特征
+        # 4-9 添加R,G,B,HSV6类颜色空间
         data[i, 4:10] = reRGBandHLS(img)
         # 添加6类其他特征
         other_feature = np.array(Feature_Color.Cal_SpetrelFeature(img)).astype('double')
