@@ -6,16 +6,14 @@
 
 import math
 import os
-
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
 
 
 # 生成高斯核
 from matplotlib import image as mpimg
-
-
 def gaussian_create():
     sigma1 = sigma2 = 1
     gaussian_sum = 0
@@ -163,68 +161,58 @@ def double_threshold(dx_gray, dy_gray, df_gray, low, high):
 
 
 if __name__ == '__main__':
-    # fulims_path = '../garbage/full/'  # 图像数据集的路径
-    # empims_path = '../garbage/empty/'
-    # fims_list = os.listdir(fulims_path)
-    # fims_list.sort(key=lambda x: int(x.split('.')[0]))
-    # eims_list = os.listdir(empims_path)
-    # eims_list.sort(key=lambda x: int(x.split('.')[0]))
-    # imgnum = len(fims_list) + len(eims_list)  # 获取总个数
-    #
-    # for i in range(imgnum):
-    #     # 读取图像
-    #     if i < len(fims_list):
-    #         img = cv2.imread('../garbage/full/' + fims_list[i])
-    #     else:
-    #         img = cv2.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
+    fulims_path = '../garbage/full/'  # 图像数据集的路径
+    empims_path = '../garbage/empty/'
+    fims_list = os.listdir(fulims_path)
+    fims_list.sort(key=lambda x: int(x.split('.')[0]))
+    eims_list = os.listdir(empims_path)
+    eims_list.sort(key=lambda x: int(x.split('.')[0]))
+    imgnum = len(fims_list) + len(eims_list)  # 获取总个数
 
-    img = cv2.imread('../garbage/full/0.jpg')
-    # img = mpimg.imread('../garbage/full/0.jpg')
+    for i in range(310, imgnum):
+        # 读取图像
+        if i < len(fims_list):
+            img = cv2.imread('../garbage/full/' + fims_list[i])
+        else:
+            img = cv2.imread('../garbage/empty/' + eims_list[i - len(fims_list)])
 
-    # 生成高斯核
-    gaussian = gaussian_create()
-    # 生成灰度图
-    gray = gray_fuc(img)
-    # 高斯卷积
-    new_gray = gaussian_blur(gray, gaussian)
-    # 求偏导
-    d = partial_derivative(new_gray)
-    dx = d[0]
-    dy = d[1]
-    df = d[2]
-    # 非极大值抑制
-    new_df = non_maximum_suppression(dx, dy, df)
-    # 双阈值过滤,并将图像转换成转化二值图
-    low_threshold = 0.15 * np.max(new_df)
-    high_threshold = 0.2 * np.max(new_df)
-    result = double_threshold(dx, dy, new_df, low_threshold, high_threshold)
+        # img = cv2.imread('../garbage/full/0.jpg')
+        # img = mpimg.imread('../garbage/full/0.jpg')
 
-    # 输出图像
-    # plt.imshow(img)
-    plt.imshow(result, cmap="gray")
-    plt.axis("off")
-    plt.show()
+        # 生成高斯核
+        gaussian = gaussian_create()
+        # 生成灰度图
+        gray = gray_fuc(img)
+        # 高斯卷积
+        new_gray = gaussian_blur(gray, gaussian)
+        # 求偏导
+        d = partial_derivative(new_gray)
+        dx = d[0]
+        dy = d[1]
+        df = d[2]
+        # 非极大值抑制
+        new_df = non_maximum_suppression(dx, dy, df)
+        # 双阈值过滤,并将图像转换成转化二值图
+        low_threshold = 0.15 * np.max(new_df)
+        high_threshold = 0.2 * np.max(new_df)
+        result = double_threshold(dx, dy, new_df, low_threshold, high_threshold)
 
-    # 保存图像
-    # result *= 255
-    # result = result.astype(np.uint8)
-    # path = r"../garbage/canny"
-    # if not os.path.exists(path):
-    #     os.makedirs(path)
-    # cv2.imwrite("0.jpg", result)
-    result_black_white = result.convert('1')
-    mpimg.imsave("0.jpg", result_black_white)
-
-
-    # if i < len(fims_list):
-    #     saveImg_path = '../garbage/canny/' + fims_list[i]
-    #     cv2.imwrite(saveImg_path, result)
-    # else:
-    #     saveImg_path = '../garbage/canny/' + eims_list[i - len(fims_list)]
-    #     cv2.imwrite(saveImg_path, result)
-
-    # saveImg_path = '../garbage/canny/' + fims_list[i]
-    # cv2.imwrite(saveImg_path, result)
-    # saveImg_path = "../garbage/canny/" + fims_list[i]
-    # cv2.imwrite(saveImg_path, result)
-    # plt.savefig(saveImg)
+        # # 输出图像
+        # # plt.imshow(img)
+        # # plt.imshow(result, cmap="gray")
+        # # plt.axis("off")
+        # # plt.show()
+        #
+        # # 保存图像
+        # result *= 255
+        # result = result.astype(np.uint8)
+        # if i < len(fims_list):
+        #     print('执行到了第{}张'.format(i))
+        #     saveImg_path = '../garbage/canny/' + fims_list[i]
+        #     plt.imsave(saveImg_path, result, cmap='gray')
+        #     # cv2.imwrite(saveImg_path, result) # cv2的库不知道为什么保存不了
+        # else:
+        #     print('执行到了第{}张'.format(i))
+        #     saveImg_path = '../garbage/canny/' + eims_list[i - len(fims_list)]
+        #     plt.imsave(saveImg_path, result, cmap='gray')
+        #     # cv2.imwrite(saveImg_path, result)   # cv2的库不知道为什么保存不了

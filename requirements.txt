@@ -3,6 +3,8 @@
 -r requirements/runtime.txt
 -r requirements/readthedocs.txt
 
-scipy~=1.9.1
-pandas~=1.4.4
-joblib~=1.1.0
+scipy~=1.7.3
+pandas~=1.2.4
+joblib~=1.2.0
+opencv-python~=4.6.0.66
+sklearn~=0.0
