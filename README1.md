@@ -92,3 +92,24 @@ cv = None：交叉验证参数，默认None，使用五折交叉验证。指定f
 
 clf.fit(X_train, y_train)： 用训练数据拟合分类器模型
 clf.predict(X_test)：用训练好的分类器去预测[X_test]数据的标签[]
+
+# Sklearn随机森林回归参数详解
+sklearn.ensemble.RandomForestRegressor(
+n_estimators=100, *, 				# 树的棵树，默认是100
+criterion='mse', 					# 默认“ mse”，衡量质量的功能，可选择“mae”。
+max_depth=None, 					# 树的最大深度。
+min_samples_split=2, 				# 拆分内部节点所需的最少样本数：
+min_samples_leaf=1, 				# 在叶节点处需要的最小样本数。
+min_weight_fraction_leaf=0.0, 		# 在所有叶节点处的权重总和中的最小加权分数。
+max_features='auto', 				# 寻找最佳分割时要考虑的特征数量。
+max_leaf_nodes=None, 				# 以最佳优先方式生长具有max_leaf_nodes的树。
+min_impurity_decrease=0.0, 			# 如果节点分裂会导致杂质的减少大于或等于该值，则该节点将被分裂。
+min_impurity_split=None, 			# 提前停止树木生长的阈值。
+bootstrap=True, 					# 建立树木时是否使用bootstrap抽样。 如果为False，则将整个数据集用于构建每棵决策树。
+oob_score=False, 					# 是否使用out-of-bag样本估算未过滤的数据的R2。
+n_jobs=None, 						# 并行运行的Job数目。
+random_state=None, 					# 控制构建树时样本的随机抽样
+verbose=0, 							# 在拟合和预测时控制详细程度。
+warm_start=False, 					# 设置为True时，重复使用上一个解决方案，否则，只需拟合一个全新的森林。
+ccp_alpha=0.0,
+max_samples=None)					# 如果bootstrap为True，则从X抽取以训练每个决策树。
