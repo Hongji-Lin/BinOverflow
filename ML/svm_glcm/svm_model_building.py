@@ -13,8 +13,7 @@ from sklearn.pipeline import Pipeline, FeatureUnion
 import time
 
 # 模型一：SVM
-"""
-# import Spectral_Feature as Spectral
+import Spectral_Feature as Spectral
 # 读取数据
 data = pd.read_csv('../data/garbage_33dim_sorted_data.csv')  # 49×16
 data = np.array(data)
@@ -85,15 +84,11 @@ for i in range(epoch):
     print("测试精度：{}".format(sum1 / len(y_test)))
     print("训练时间：{}".format(end_time - start_time))
     print('')
-"""
 
 
-
-
-
+# PCA
 """
 import Spectral_Feature as Spectral
-
 # 读取数据
 data = pd.read_csv('../data/garbage_33dim_data.csv')  # 49×11
 data = np.array(data)
