@@ -44,19 +44,19 @@ for i in range(epoch):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_imgidx = []
+    err_idx = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_imgidx.append(X_test[err_idx[i], 0])
-    err_imgidx.sort()
+        err_idx.append(X_test[err_idx[i], 0])
+    err_idx.sort()
 
-    for i in range(len(err_imgidx)):
-        if err_imgidx[i] <= 309:
-            ful_res.append(err_imgidx[i])
+    for i in range(len(err_idx)):
+        if err_idx[i] <= 309:
+            ful_res.append(err_idx[i])
         else:
-            emp_res.append(err_imgidx[i])
+            emp_res.append(err_idx[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
@@ -89,19 +89,19 @@ for i in range(epoch):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_imgidx = []
+    err_idx = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_imgidx.append(X_test[err_idx[i], 0])
-    err_imgidx.sort()
+        err_idx.append(X_test[err_idx[i], 0])
+    err_idx.sort()
 
-    for i in range(len(err_imgidx)):
-        if err_imgidx[i] <= 309:
-            ful_res.append(err_imgidx[i])
+    for i in range(len(err_idx)):
+        if err_idx[i] <= 309:
+            ful_res.append(err_idx[i])
         else:
-            emp_res.append(err_imgidx[i])
+            emp_res.append(err_idx[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
@@ -134,19 +134,19 @@ for i in range(epoch):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_imgidx = []
+    err_idx = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_imgidx.append(X_test[err_idx[i], 0])
-    err_imgidx.sort()
+        err_idx.append(X_test[err_idx[i], 0])
+    err_idx.sort()
 
-    for i in range(len(err_imgidx)):
-        if err_imgidx[i] <= 309:
-            ful_res.append(err_imgidx[i])
+    for i in range(len(err_idx)):
+        if err_idx[i] <= 309:
+            ful_res.append(err_idx[i])
         else:
-            emp_res.append(err_imgidx[i])
+            emp_res.append(err_idx[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
