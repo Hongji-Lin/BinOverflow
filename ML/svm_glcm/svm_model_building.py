@@ -37,7 +37,7 @@ for i in range(epoch):
     clf = GridSearchCV(svm_clf, parameters, cv=5)
 
     # 训练模型
-    # print('train beagin...')
+    # print('train begin...')
     # clf.fit(X_train[:, 1:-1], y_train)
     # joblib.dump(clf, "svm_garbage.model")
     # print('Training finished')
@@ -58,19 +58,19 @@ for i in range(epoch):
             err_idx.append(i)
     print(err_idx)
 
-    err_idx = []
+    err_num = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_idx.append(X_test[err_idx[i], 0])
-    err_idx.sort()
+        err_num.append(X_test[err_idx[i], 0])
+    err_num.sort()
 
-    for i in range(len(err_idx)):
-        if err_idx[i] <= 309:
-            ful_res.append(err_idx[i])
+    for i in range(len(err_num)):
+        if err_num[i] <= 309:
+            ful_res.append(err_num[i])
         else:
-            emp_res.append(err_idx[i])
+            emp_res.append(err_num[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
 

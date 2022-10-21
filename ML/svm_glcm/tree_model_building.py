@@ -8,6 +8,7 @@
 import time
 import numpy as np
 import pandas as pd
+from sklearn import ensemble
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.tree import DecisionTreeClassifier
@@ -39,19 +40,19 @@ def random_forest(X_train, y_train, X_test, y_test):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_idx = []
+    err_num = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_idx.append(X_test[err_idx[i], 0])
-    err_idx.sort()
+        err_num.append(X_test[err_idx[i], 0])
+    err_num.sort()
 
-    for i in range(len(err_idx)):
-        if err_idx[i] <= 309:
-            ful_res.append(err_idx[i])
+    for i in range(len(err_num)):
+        if err_num[i] <= 309:
+            ful_res.append(err_num[i])
         else:
-            emp_res.append(err_idx[i])
+            emp_res.append(err_num[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
@@ -85,19 +86,19 @@ def decision_tree(X_train, y_train, X_test, y_test):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_idx = []
+    err_num = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_idx.append(X_test[err_idx[i], 0])
-    err_idx.sort()
+        err_num.append(X_test[err_idx[i], 0])
+    err_num.sort()
 
-    for i in range(len(err_idx)):
-        if err_idx[i] <= 309:
-            ful_res.append(err_idx[i])
+    for i in range(len(err_num)):
+        if err_num[i] <= 309:
+            ful_res.append(err_num[i])
         else:
-            emp_res.append(err_idx[i])
+            emp_res.append(err_num[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
@@ -115,7 +116,7 @@ def decision_tree(X_train, y_train, X_test, y_test):
 # 极端随机树 ExtraTree
 def extra_tree(X_train, y_train, X_test, y_test):
     print('ExtraTrees train begin')
-    clf3 = ExtraTreesClassifier(n_estimators=10, max_depth=None, min_samples_split=2, random_state=0)
+    clf3 = ExtraTreesClassifier(n_estimators=100, max_depth=None, min_samples_split=2, random_state=0)
     clf3.fit(X_train[:, 1:-1], y_train)
     # joblib.dump(clf3, "ExtraTrees_garbage.model")        # 模型保存
     # clf = joblib.load("ExtraTrees_garbage.model")        # 模型加载
@@ -132,19 +133,70 @@ def extra_tree(X_train, y_train, X_test, y_test):
             err_idx.append(i)
     print('分类错误的下标索引值：{}'.format(err_idx))
 
-    err_idx = []
+    err_num = []
     ful_res = []
     emp_res = []
     err_dict = dict()
     for i in range(len(err_idx)):
-        err_idx.append(X_test[err_idx[i], 0])
-    err_idx.sort()
+        err_num.append(X_test[err_idx[i], 0])
+    err_num.sort()
 
-    for i in range(len(err_idx)):
-        if err_idx[i] <= 309:
-            ful_res.append(err_idx[i])
+    for i in range(len(err_num)):
+        if err_num[i] <= 309:
+            ful_res.append(err_num[i])
         else:
-            emp_res.append(err_idx[i])
+            emp_res.append(err_num[i])
+        err_dict['full'] = ful_res
+        err_dict['empty'] = emp_res
+    print('分类错误的集合：{}'.format(err_dict))
+
+    end_time = time.time()
+
+    print('len(y_test)', len(y_test))
+    print('right sum', sum1)
+    # print('rate[', i, '] ', sum1 / len(y_test))
+    print("测试精度：{}".format(sum1 / len(y_test)))
+    print("训练时间：{}".format(end_time - start_time))
+    print('')
+
+
+# 梯度提升 GradientBoosting
+def gradient_boost(X_train, y_train, X_test, y_test):
+    print('GradientBoosting train begin')
+    params = {
+        "n_estimators": 500,
+        "learning_rate": 0.01,
+    }
+    clf4 = ensemble.GradientBoostingClassifier(**params)
+    clf4.fit(X_train[:, 1:-1], y_train)
+    # joblib.dump(clf3, "ExtraTrees_garbage.model")        # 模型保存
+    # clf = joblib.load("ExtraTrees_garbage.model")        # 模型加载
+    y_pre = clf4.predict(X_test[:, 1:-1])
+    print('Training finished')
+
+    # 计算准确率和找到分类错误的索引
+    sum1 = 0
+    err_idx = []
+    for i in range(len(y_test)):
+        if y_pre[i] == y_test[i]:
+            sum1 += 1
+        else:
+            err_idx.append(i)
+    print('分类错误的下标索引值：{}'.format(err_idx))
+
+    err_num = []
+    ful_res = []
+    emp_res = []
+    err_dict = dict()
+    for i in range(len(err_idx)):
+        err_num.append(X_test[err_idx[i], 0])
+    err_num.sort()
+
+    for i in range(len(err_num)):
+        if err_num[i] <= 309:
+            ful_res.append(err_num[i])
+        else:
+            emp_res.append(err_num[i])
         err_dict['full'] = ful_res
         err_dict['empty'] = emp_res
     print('分类错误的集合：{}'.format(err_dict))
@@ -169,7 +221,9 @@ if __name__ == '__main__':
         random_forest(X1_train, y1_train, X1_test, y1_test)
         decision_tree(X1_train, y1_train, X1_test, y1_test)
         extra_tree(X1_train, y1_train, X1_test, y1_test)
+        gradient_boost(X1_train, y1_train, X1_test, y1_test)
 
         # 交叉验证
         # scores1 = cross_val_score(clf1, X, y)
         # print(scores1.mean())
+
