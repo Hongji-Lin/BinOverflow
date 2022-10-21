@@ -7,7 +7,9 @@ import numpy as np
 from mmdet.apis import inference_detector, init_detector, show_result_pyplot
 sys.path.append("..")
 from base.base import interface
-#垃圾分割类
+
+
+# 垃圾分割类
 class HandleGarbage(interface):
     def __init__(self):
 
@@ -23,7 +25,7 @@ class HandleGarbage(interface):
         return inference_detector(self.model, image)
 
 
-#返回list为输入框的个数， -1代表未检测到垃圾桶， 0代表检测到垃圾桶但未检测到垃圾， 大于0的数为垃圾的面积
+# 返回list为输入框的个数， -1代表未检测到垃圾桶， 0代表检测到垃圾桶但未检测到垃圾， 大于0的数为垃圾的面积
 def waste_container_status(images, bbox):
 
     ret = []
@@ -48,12 +50,12 @@ def waste_container_status(images, bbox):
             np.full(bbox.shape[0], i, dtype=np.int32)
             for i, bbox in enumerate(bbox_result)
         ]
-        #print(labels)
+        # print(labels)
         labels = np.concatenate(labels)
         # draw segmentation masks
         if segm_result is not None and len(labels) > 0:  # non empty
             segms = mmcv.concat_list(segm_result)
-            #inds = np.where(bboxes[:, -1] > 0.4)[0]
+            # inds = np.where(bboxes[:, -1] > 0.4)[0]
             np.random.seed(42)
             # for i in inds:
             #     i = int(i)
@@ -66,7 +68,8 @@ def waste_container_status(images, bbox):
 
     return ret
 
-#demo 测试接口可参考该函数调用接口
+
+# demo 测试接口可参考该函数调用接口
 if __name__ == '__main__':
     img = mmcv.imread('../images/02.png')
     bbox = [[444,246,583,397], [650,265,754,406], [749,257,861,417] ]#3 trash position [left,top, right, bottom ]
