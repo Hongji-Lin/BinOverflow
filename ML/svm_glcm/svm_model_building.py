@@ -1,19 +1,15 @@
-from sklearn import svm  # svm支持向量机
-import matplotlib.pyplot as plt  # 可视化绘图
-import numpy as np
-# from sklearn import cross_validation
-from sklearn.model_selection import train_test_split, cross_val_score
-import pandas as pd
-import joblib
-# from sklearn.externals import joblib
-from sklearn.model_selection import GridSearchCV
-from sklearn.decomposition import PCA
-from sklearn.feature_selection import SelectKBest
-from sklearn.pipeline import Pipeline, FeatureUnion
 import time
 
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn import svm  # svm支持向量机
+# from sklearn.externals import joblib
+from sklearn.model_selection import GridSearchCV
+# from sklearn import cross_validation
+from sklearn.model_selection import train_test_split
+
 # 模型一：SVM
-import Spectral_Feature as Spectral
 # 读取数据
 data = pd.read_csv('../data/garbage_33dim_sorted_data.csv')  # 49×16
 data = np.array(data)
