@@ -28,9 +28,9 @@ def waste_container_status(images, bbox):
     ret = []
     for index, box in enumerate(bbox):
         # print(box)
-        lefttop = box[0]
-        rightbottom = box[2]
-        image = images[lefttop[1]:rightbottom[1], lefttop[0]:rightbottom[0]]
+        left_top = box[0]
+        right_bottom = box[2]
+        image = images[left_top[1]:right_bottom[1], left_top[0]:right_bottom[0]]
 
         result = HandleGarbage().inference(image)
         img = image.copy()

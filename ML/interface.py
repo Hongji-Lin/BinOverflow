@@ -16,7 +16,7 @@ from base.base import interface
 class HandleGarbage(interface):
     def __init__(self):
         # 提取模型
-        self.checkpoint = joblib.load('ML/weights/svm_garbage.model')
+        self.checkpoint = joblib.load('./svm_glcm/svm_garbage.model')
         self.Feature_Color = Spectral_Features()
         self.data = np.zeros((1, 16))  # 标签（0 空 1 满）
 
@@ -51,10 +51,10 @@ def waste_container_status(images, bbox):
 
     for index, box in enumerate(bbox):
 
-        lefttop = box[0]
-        rightbottom = box[2]
+        left_top = box[0]
+        right_bottom = box[2]
 
-        image = images[lefttop[1]:rightbottom[1], lefttop[0]:rightbottom[0]]
+        image = images[left_top[1]:right_bottom[1], left_top[0]:right_bottom[0]]
         # cv2.imwrite('result.jpg', image)
         if image is None:
             return -1

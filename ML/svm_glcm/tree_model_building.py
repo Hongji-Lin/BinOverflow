@@ -21,8 +21,8 @@ epoch = 1
 start_time = time.time()
 
 
+# 随机森林
 def random_forest(X_train, y_train, X_test, y_test):
-    # 随机森林
     print('RandomForest train begin')
     clf1 = RandomForestClassifier(n_estimators=10, max_depth=None, min_samples_split=2, random_state=0)
     clf1.fit(X_train[:, 1:-1], y_train)

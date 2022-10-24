@@ -169,7 +169,18 @@ if __name__ == '__main__':
     eims_list.sort(key=lambda x: int(x.split('.')[0]))
     imgnum = len(fims_list) + len(eims_list)  # 获取总个数
 
-    for i in range(310, imgnum):
+    # img = cv2.imread('../garbage/full/1.jpg')
+    # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # img = cv2.GaussianBlur(img, (3, 3), 0)
+    # canny1 = cv2.Canny(img, 50, 100)
+    # canny2 = cv2.Canny(img, 27.70177535118071, 36.935700468240945)
+    #
+    # cv2.imshow('Canny1', canny1)
+    # cv2.imshow('Canny2', canny2)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+
+    for i in range(imgnum):
         # 读取图像
         if i < len(fims_list):
             img = cv2.imread('../garbage/full/' + fims_list[i])
@@ -194,10 +205,10 @@ if __name__ == '__main__':
         high_threshold = 0.2 * np.max(new_df)
         result = double_threshold(dx, dy, new_df, low_threshold, high_threshold)
 
-        # pca降维
-        X = result.reshape(1, -1)
-        pca = PCA(n_components=1)
-        pca.fit(X)
+        # # pca降维
+        # X = result.reshape(1, -1)
+        # pca = PCA(n_components=1)
+        # pca.fit(X)
 
         # # 输出图像
         # # plt.imshow(img)
@@ -205,16 +216,16 @@ if __name__ == '__main__':
         # # plt.axis("off")
         # # plt.show()
         #
-        # # 保存图像
-        # result *= 255
-        # result = result.astype(np.uint8)
-        # if i < len(fims_list):
-        #     print('执行到了第{}张'.format(i))
-        #     saveImg_path = '../garbage/canny/' + fims_list[i]
-        #     plt.imsave(saveImg_path, result, cmap='gray')
-        #     # cv2.imwrite(saveImg_path, result) # cv2的库不知道为什么保存不了
-        # else:
-        #     print('执行到了第{}张'.format(i))
-        #     saveImg_path = '../garbage/canny/' + eims_list[i - len(fims_list)]
-        #     plt.imsave(saveImg_path, result, cmap='gray')
-        #     # cv2.imwrite(saveImg_path, result)   # cv2的库不知道为什么保存不了
+        # 保存图像
+        result *= 255
+        result = result.astype(np.uint8)
+        if i < len(fims_list):
+            print('执行到了第{}张'.format(i))
+            saveImg_path = '../garbage/canny/' + fims_list[i]
+            # plt.imsave(saveImg_path, result, cmap='gray')
+            cv2.imwrite(saveImg_path, result) # cv2的库不知道为什么保存不了
+        else:
+            print('执行到了第{}张'.format(i))
+            saveImg_path = '../garbage/canny/' + eims_list[i - len(fims_list)]
+            # plt.imsave(saveImg_path, result, cmap='gray')
+            cv2.imwrite(saveImg_path, result)   # cv2的库不知道为什么保存不了
