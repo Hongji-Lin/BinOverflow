@@ -17,7 +17,7 @@ from sklearn.tree import DecisionTreeClassifier
 data = pd.read_csv('../data/garbage_33dim_sorted_data.csv')  # 49×16
 data = np.array(data)
 rate = []
-epoch = 1
+epoch = 10
 start_time = time.time()
 
 

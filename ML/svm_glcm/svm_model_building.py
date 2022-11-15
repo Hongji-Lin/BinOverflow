@@ -8,6 +8,7 @@ from sklearn import svm  # svm支持向量机
 from sklearn.model_selection import GridSearchCV
 # from sklearn import cross_validation
 from sklearn.model_selection import train_test_split
+from torch.utils.tensorboard import SummaryWriter
 
 # 模型一：SVM
 # 读取数据
@@ -15,8 +16,11 @@ data = pd.read_csv('../data/garbage_33dim_sorted_data.csv')  # 49×16
 data = np.array(data)
 # print('data\n', data)
 rate = []
-Kern = 'linear'  # 或许不应该是‘poly’吗？后面有degree=3
-epoch = 1
+Kern = 'linear'
+epoch = 50
+
+writer = SummaryWriter('runs/experiment')
+
 
 start_time = time.time()
 for i in range(epoch):
